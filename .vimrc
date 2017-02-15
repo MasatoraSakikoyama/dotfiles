@@ -98,11 +98,8 @@ NeoBundle 'mxw/vim-jsx'
 NeoBundle 'https://github.com/othree/html5.vim'
 " css3
 NeoBundle 'https://github.com/hail2u/vim-css3-syntax'
-" emmet
-NeoBundle 'https://github.com/mattn/emmet-vim'
-" backbone
-NeoBundle 'https://github.com/mklabs/vim-backbone'
+" swift
+NeoBundle 'apple-swift', {'type': 'nosync', 'base': '~/.vim/bundle/'}
 call neobundle#end()
 
 filetype plugin indent on     " required!
-
