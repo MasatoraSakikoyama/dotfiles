@@ -1,0 +1,12 @@
+[user]
+    name = MasatoraSakikoyama
+    email = sakikoyama@icloud.com
+[alias]
+    a = add
+    b = branch
+    c = commit
+    co = checkout
+    l = log
+    pl = pull
+    ps = push
+    s = status
