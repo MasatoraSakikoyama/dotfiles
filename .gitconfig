@@ -7,6 +7,7 @@
     c = commit
     co = checkout
     l = log
+    m = merge
     pl = pull
     ps = push
     s = status
