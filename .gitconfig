@@ -8,3 +8,6 @@
     pl = pull
     ps = push
     s = status
+    r = revert
+[core]
+    editor = vim
