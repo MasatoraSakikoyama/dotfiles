@@ -10,6 +10,8 @@ set backspace=indent,eol,start
 
 colorscheme pablo
 syntax on
+set list
+set listchars=tab:>-,trail:-
 set number
 set title
 set virtualedit=onemore
@@ -38,7 +40,6 @@ if has('vim_starting')
 endif
 call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
-NeoBundle 'davidhalter/jedi-vim'
 NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'mxw/vim-jsx'
 NeoBundle 'https://github.com/othree/html5.vim'
