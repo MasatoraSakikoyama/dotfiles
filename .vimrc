@@ -11,19 +11,16 @@ set backspace=indent,eol,start
 colorscheme pablo
 syntax on
 set number
+set title
 set virtualedit=onemore
 set smartindent
 set visualbell
 set showmatch
 set laststatus=2
 set wildmode=list:longest
-
-set list
-set listchars=tab:>-,trail:-
 set expandtab
 set tabstop=4
 set shiftwidth=4
-
 set ignorecase
 set smartcase
 set incsearch
@@ -48,7 +45,6 @@ NeoBundle 'https://github.com/othree/html5.vim'
 NeoBundle 'https://github.com/hail2u/vim-css3-syntax'
 NeoBundle 'apple-swift', {'type': 'nosync', 'base': '~/.vim/bundle/'}
 NeoBundle 'scrooloose/nerdtree'
-NeoBundleCheck
 call neobundle#end()
 
 filetype plugin indent on
