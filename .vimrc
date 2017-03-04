@@ -38,7 +38,6 @@ if has('vim_starting')
 endif
 call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
-NeoBundle 'davidhalter/jedi-vim'
 NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'mxw/vim-jsx'
 NeoBundle 'https://github.com/othree/html5.vim'
