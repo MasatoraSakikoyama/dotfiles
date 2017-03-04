@@ -19,7 +19,7 @@ set laststatus=2
 set wildmode=list:longest
 
 set list
-set listchars=tab:>-,trail:.
+set listchars=tab:>-,trail:-
 set expandtab
 set tabstop=4
 set shiftwidth=4
@@ -51,6 +51,7 @@ NeoBundle 'scrooloose/nerdtree'
 NeoBundleCheck
 call neobundle#end()
 
+filetype plugin indent on
+
 autocmd vimenter * NERDTree
 
-filetype plugin indent on
