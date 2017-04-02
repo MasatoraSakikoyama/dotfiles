@@ -1,8 +1,12 @@
+[user]
+    name = MasatoraSakikoyama
+    email = 
 [alias]
     a = add
     b = branch
     c = commit
     co = checkout
+    f = fetch
     l = log
     m = merge
     pl = pull
