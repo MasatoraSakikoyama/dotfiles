@@ -24,6 +24,7 @@ set wildmode=list:longest
 set expandtab
 set tabstop=4
 set shiftwidth=4
+set softtabstop=4
 set ignorecase
 set smartcase
 set incsearch
@@ -52,4 +53,10 @@ call neobundle#end()
 filetype plugin indent on
 
 autocmd vimenter * NERDTree
-
+augroup fileTypeIndent
+    autocmd!
+    autocmd BufNewFile,BufRead *.py setlocal tabstop=4 softtabstop=4 shiftwidth=4
+    autocmd BufNewFile,BufRead *.js setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.html setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.css setlocal tabstop=2 softtabstop=2 shiftwidth=2
+augroup END
