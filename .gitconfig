@@ -7,7 +7,7 @@
     c = commit
     co = checkout
     f = fetch
-    l = log
+    l = log --graph
     m = merge
     pl = pull
     ps = push
