@@ -10,3 +10,6 @@
     s = status
 [core]
     editor = vim
+[user]
+    name = MasatoraSakikoyama
+    mail = sakikoyama@icloud.com
