@@ -1,4 +1,4 @@
-export LANG=ja_JP.UTF-8
+export LANG=en_US.UTF-8
 bindkey -v
 # cd後、自動的にpushdする
 setopt auto_pushd
@@ -83,7 +83,6 @@ case ${OSTYPE} in
         ;;
     linux*)
         # Linux用の設定
-        alias ls='ls -F --color=auto'
         # tmux用設定スクリプトの読み込み
         if [ -f ~/.zsh/.zsh_tmux ]; then
             . ~/.zsh/.zsh_tmux
