@@ -9,7 +9,7 @@ set showcmd
 set backspace=indent,eol,start
 set clipboard=unnamed
 
-colorscheme railscasts
+colorscheme pablo
 syntax on
 set list
 set listchars=tab:>-,trail:-
