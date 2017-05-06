@@ -9,7 +9,7 @@ set showcmd
 set backspace=indent,eol,start
 set clipboard=unnamed
 
-colorscheme pablo
+colorscheme railscasts
 syntax on
 set list
 set listchars=tab:>-,trail:-
@@ -43,11 +43,11 @@ endif
 call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'pangloss/vim-javascript'
-NeoBundle 'mxw/vim-jsx'
 NeoBundle 'https://github.com/othree/html5.vim'
 NeoBundle 'https://github.com/hail2u/vim-css3-syntax'
 NeoBundle 'apple-swift', {'type': 'nosync', 'base': '~/.vim/bundle/'}
 NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'jpo/vim-railscasts-theme'
 call neobundle#end()
 
 filetype plugin indent on
