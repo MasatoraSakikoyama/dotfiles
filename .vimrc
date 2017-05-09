@@ -52,6 +52,7 @@ call neobundle#end()
 
 filetype plugin indent on
 
+let NERDTreeShowHidden = 1 " 隠しファイル表示
 autocmd vimenter * NERDTree
 augroup fileTypeIndent
     autocmd!
