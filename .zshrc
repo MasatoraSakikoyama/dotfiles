@@ -72,10 +72,6 @@ HISTSIZE=100000
 SAVEHIST=100000
 # プロンプト
 PROMPT="%{${fg[cyan]}%}%n@%m%{${reset_color}%}:%~$ "
-# pyenv
-export PYENV_ROOT=$HOME/.pyenv
-export PATH=$PYENV_ROOT/bin:$PATH
-eval "$(pyenv init -)"
 # OS 別の設定
 case ${OSTYPE} in
     darwin*)
@@ -102,6 +98,7 @@ case ${OSTYPE} in
         fi
         ;;
 esac
+# pyenv
 export PYENV_ROOT=$HOME/.pyenv
 export PATH=$PYENV_ROOT/bin:$PATH
 eval "$(pyenv init -)"
