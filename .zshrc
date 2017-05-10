@@ -83,9 +83,17 @@ case ${OSTYPE} in
         ;;
     linux*)
         # Linux用の設定
+        if [ -x /usr/bin/dircolors ]; then
+            test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+            alias ls='ls --color=auto'
+            alias grep='grep --color=auto'
+        fi
         # tmux用設定スクリプトの読み込み
         if [ -f ~/.zsh/.zsh_tmux ]; then
             . ~/.zsh/.zsh_tmux
         fi
         ;;
 esac
+export PYENV_ROOT=$HOME/.pyenv
+export PATH=$PYENV_ROOT/bin:$PATH
+eval "$(pyenv init -)"
