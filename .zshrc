@@ -72,17 +72,30 @@ HISTSIZE=100000
 SAVEHIST=100000
 # プロンプト
 PROMPT="%{${fg[cyan]}%}%n@%m%{${reset_color}%}:%~$ "
+# pyenv
+export PYENV_ROOT=$HOME/.pyenv
+export PATH=$PYENV_ROOT/bin:$PATH
+eval "$(pyenv init -)"
 # OS 別の設定
 case ${OSTYPE} in
     darwin*)
         # Mac用の設定
-        export LSCOLORS=gxfxcxdxbxegedabagacad
+        LSCOLORS=gxfxcxdxbxegedabagacad
+        if [ -n "$LSCOLORS" ]; then
+            zstyle ':completion:*' list-colors ${(s.:.)LSCOLORS}
+        fi
+        export LSCOLORS
         alias ll='ls -alFG'
         alias la='ls -AG'
         alias l='ls -CFG'
         ;;
     linux*)
         # Linux用の設定
+        if [ -x /usr/bin/dircolors ]; then
+            test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+            alias ls='ls --color=auto'
+            alias grep='grep --color=auto'
+        fi
         # tmux用設定スクリプトの読み込み
         if [ -f ~/.zsh/.zsh_tmux ]; then
             . ~/.zsh/.zsh_tmux
