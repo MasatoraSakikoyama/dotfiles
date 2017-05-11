@@ -1,6 +1,6 @@
 [user]
-    name = MasatoraSakikoyama
-    email = sakikoyama@icloud.com
+    name = 
+    email = 
 [alias]
     a = add
     b = branch
@@ -14,6 +14,3 @@
     s = status
 [core]
     editor = vim
-[user]
-    name = MasatoraSakikoyama
-    mail = sakikoyama@icloud.com
