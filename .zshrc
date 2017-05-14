@@ -72,6 +72,10 @@ HISTSIZE=100000
 SAVEHIST=100000
 # プロンプト
 PROMPT="%{${fg[cyan]}%}%n@%m%{${reset_color}%}:%~$ "
+# tmux用設定スクリプトの読み込み
+if [ -f ~/.zsh/.zsh_tmux ]; then
+    . ~/.zsh/.zsh_tmux
+fi
 # OS 別の設定
 case ${OSTYPE} in
     darwin*)
@@ -87,10 +91,6 @@ case ${OSTYPE} in
             test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
             alias ls='ls --color=auto'
             alias grep='grep --color=auto'
-        fi
-        # tmux用設定スクリプトの読み込み
-        if [ -f ~/.zsh/.zsh_tmux ]; then
-            . ~/.zsh/.zsh_tmux
         fi
         ;;
 esac
