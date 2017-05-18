@@ -40,4 +40,8 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# for docker divelop
+.bash_history
+.cache/
+.viminfo
 
