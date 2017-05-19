@@ -80,7 +80,11 @@ fi
 case ${OSTYPE} in
     darwin*)
         # Mac用の設定
-        export LSCOLORS=gxfxcxdxbxegedabagacad
+        LSCOLORS=gxfxcxdxbxegedabagacad
+        if [ -n "$LSCOLORS" ]; then
+            zstyle ':completion:*' list-colors ${(s.:.)LSCOLORS}
+        fi
+        export LSCOLORS
         alias ll='ls -alFG'
         alias la='ls -AG'
         alias l='ls -CFG'
@@ -94,6 +98,7 @@ case ${OSTYPE} in
         fi
         ;;
 esac
+# pyenv
 export PYENV_ROOT=$HOME/.pyenv
 export PATH=$PYENV_ROOT/bin:$PATH
 eval "$(pyenv init -)"
