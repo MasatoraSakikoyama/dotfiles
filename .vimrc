@@ -7,7 +7,7 @@ set autoread
 set hidden
 set showcmd
 set backspace=indent,eol,start
-set clipboard+=unnamed
+set clipboard=unnamed,autoselect
 
 colorscheme pablo
 syntax on
