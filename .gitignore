@@ -43,6 +43,7 @@ Temporary Items
 # for docker divelop
 .bash_history
 .cache/
+.npm/
 .viminfo
 .vim/
 .npm/
