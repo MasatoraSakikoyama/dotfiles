@@ -76,6 +76,7 @@ PROMPT="%{${fg[cyan]}%}%n@%m%{${reset_color}%}:%~$ "
 case ${OSTYPE} in
     darwin*)
         # Mac用の設定
+        export PATH=/usr/local:$PATH
         LSCOLORS=gxfxcxdxbxegedabagacad
         if [ -n "$LSCOLORS" ]; then
             zstyle ':completion:*' list-colors ${(s.:.)LSCOLORS}
