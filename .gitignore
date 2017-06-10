@@ -45,3 +45,6 @@ Temporary Items
 .cache/
 .npm/
 .viminfo
+.vim/
+.rediscli_history
+.mysql_history
