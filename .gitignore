@@ -46,5 +46,7 @@ Temporary Items
 .npm/
 .viminfo
 .vim/
+.rediscli_history
+.mysql_history
 .npm/
 .tox/
