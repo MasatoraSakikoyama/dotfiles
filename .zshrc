@@ -45,6 +45,8 @@ alias mv='mv -i'
 alias grep='grep --color=auto'
 alias mkdir='mkdir -p'
 alias sudo='sudo '
+alias vim='nvim'
+alias vi='nvim'
 # 補完機能を有効にする
 autoload -Uz compinit
 compinit
