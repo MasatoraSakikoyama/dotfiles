@@ -1,1 +1,1 @@
-.vimrc
+/Users/sakikoyama/Workspace/dotfiles/.vimrc
