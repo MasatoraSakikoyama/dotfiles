@@ -47,6 +47,7 @@ alias mkdir='mkdir -p'
 alias sudo='sudo '
 alias vim='nvim'
 alias vi='nvim'
+alias d=docker
 # 補完機能を有効にする
 autoload -Uz compinit
 compinit
@@ -74,10 +75,6 @@ HISTSIZE=100000
 SAVEHIST=100000
 # プロンプト
 PROMPT="%{${fg[cyan]}%}%n@%m%{${reset_color}%}:%~$ "
-# tmux用設定スクリプトの読み込み
-if [ -f ~/.zsh/.zsh_tmux ]; then
-    . ~/.zsh/.zsh_tmux
-fi
 # OS 別の設定
 case ${OSTYPE} in
     darwin*)
