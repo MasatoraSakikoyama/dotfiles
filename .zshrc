@@ -48,6 +48,7 @@ alias sudo='sudo '
 alias vim='nvim'
 alias vi='nvim'
 alias d=docker
+alias dc=docker-compose
 # 補完機能を有効にする
 autoload -Uz compinit
 compinit
