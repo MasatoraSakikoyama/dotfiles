@@ -1,14 +1,3 @@
-set splitbelow
-set splitright
-set fenc=utf-8
-set nobackup
-set noswapfile
-set autoread
-set hidden
-set showcmd
-set backspace=indent,eol,start
-set clipboard=unnamed
-
 colorscheme pablo
 syntax on
 set list
@@ -30,6 +19,16 @@ set smartcase
 set incsearch
 set wrapscan
 set hlsearch
+set splitbelow
+set splitright
+set fenc=utf-8
+set nobackup
+set noswapfile
+set autoread
+set hidden
+set showcmd
+set backspace=indent,eol,start
+set clipboard=unnamed
 nmap <Esc><Esc> :nohlsearch<CR><Esc>
 " python pdb"
 inoremap pdb<Space> import pdb;pdb.set_trace()
@@ -54,10 +53,13 @@ filetype plugin indent on
 
 let NERDTreeShowHidden = 1 " 隠しファイル表示
 autocmd vimenter * NERDTree
+
 augroup fileTypeIndent
     autocmd!
     autocmd BufNewFile,BufRead *.py setlocal tabstop=4 softtabstop=4 shiftwidth=4
     autocmd BufNewFile,BufRead *.js setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.jsx setlocal tabstop=2 softtabstop=2 shiftwidth=2
     autocmd BufNewFile,BufRead *.html setlocal tabstop=2 softtabstop=2 shiftwidth=2
     autocmd BufNewFile,BufRead *.css setlocal tabstop=2 softtabstop=2 shiftwidth=2
+    autocmd BufNewFile,BufRead *.go setlocal noexpandtab
 augroup END
