@@ -46,7 +46,7 @@ NeoBundle 'https://github.com/othree/html5.vim'
 NeoBundle 'https://github.com/hail2u/vim-css3-syntax'
 NeoBundle 'apple-swift', {'type': 'nosync', 'base': '~/.vim/bundle/'}
 NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'jpo/vim-railscasts-theme'
+NeoBundle 'https://github.com/mxw/vim-jsx'
 call neobundle#end()
 
 filetype plugin indent on

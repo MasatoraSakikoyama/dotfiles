@@ -50,3 +50,5 @@ Temporary Items
 .mysql_history
 .npm/
 .tox/
+
+.config/configstore/
