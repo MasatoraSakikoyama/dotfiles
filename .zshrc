@@ -80,6 +80,7 @@ PROMPT="%{${fg[cyan]}%}%n@%m%{${reset_color}%}:%~$ "
 case ${OSTYPE} in
     darwin*)
         # Mac用の設定
+        export PATH="/usr/local/Cellar/git/2.5.0/bin:$PATH"
         export PATH=/usr/local:$PATH
         LSCOLORS=gxfxcxdxbxegedabagacad
         if [ -n "$LSCOLORS" ]; then

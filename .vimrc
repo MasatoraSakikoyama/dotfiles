@@ -44,7 +44,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'https://github.com/othree/html5.vim'
 NeoBundle 'https://github.com/hail2u/vim-css3-syntax'
-NeoBundle 'apple-swift', {'type': 'nosync', 'base': '~/.vim/bundle/'}
+" NeoBundle 'apple-swift', {'type': 'nosync', 'base': '~/.vim/bundle/'}
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'https://github.com/mxw/vim-jsx'
 call neobundle#end()
