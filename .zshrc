@@ -50,8 +50,9 @@ alias vi='nvim'
 alias d=docker
 alias dc=docker-compose
 # 補完機能を有効にする
+fpath=(~/.zsh/completion $fpath)
 autoload -Uz compinit
-compinit
+compinit -u
 # 色を使用出来るようにする
 autoload -Uz colors
 colors
