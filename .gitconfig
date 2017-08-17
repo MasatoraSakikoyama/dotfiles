@@ -1,16 +1,5 @@
 [user]
     name = MasatoraSakikoyama
     email = hoge@fuga
-[alias]
-    a = add
-    b = branch
-    c = commit
-    co = checkout
-    f = fetch
-    l = log --graph
-    m = merge
-    pl = pull
-    ps = push
-    s = status
 [core]
     editor = vim
