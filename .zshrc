@@ -49,8 +49,8 @@ alias vim='nvim'
 alias vi='nvim'
 alias d=docker
 alias dc=docker-compose
-# 補完機能を有効にする
-fpath=(~/.zsh/completion $fpath)
+# 補完機能を有効にする(homebrewでのzsh,gitのインストール前提)
+fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
 autoload -Uz compinit
 compinit -u
 # 色を使用出来るようにする
