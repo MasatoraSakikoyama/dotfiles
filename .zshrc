@@ -91,6 +91,7 @@ case ${OSTYPE} in
         alias ll='ls -alFG'
         alias la='ls -AG'
         alias l='ls -CFG'
+        eval "$(ssh-add)"
         ;;
     linux*)
         # Linux用の設定
