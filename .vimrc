@@ -41,6 +41,7 @@ endif
 call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'jpo/vim-railscasts-theme'
 call neobundle#end()
 
 filetype plugin indent on
@@ -58,4 +59,4 @@ augroup fileTypeIndent
     autocmd BufNewFile,BufRead *.go setlocal noexpandtab
 augroup END
 
-colorscheme pablo
+colorscheme railscasts
