@@ -1,5 +1,4 @@
-colorscheme pablo
-syntax on
+syntax enable
 set list
 set listchars=tab:>-,trail:-
 set number
@@ -41,18 +40,13 @@ if has('vim_starting')
 endif
 call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
-NeoBundle 'pangloss/vim-javascript'
-NeoBundle 'https://github.com/othree/html5.vim'
-NeoBundle 'https://github.com/hail2u/vim-css3-syntax'
-" NeoBundle 'apple-swift', {'type': 'nosync', 'base': '~/.vim/bundle/'}
 NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'https://github.com/mxw/vim-jsx'
+NeoBundle 'jpo/vim-railscasts-theme'
 call neobundle#end()
 
 filetype plugin indent on
 
 let NERDTreeShowHidden = 1 " 隠しファイル表示
-" autocmd vimenter * NERDTree
 nnoremap <silent><C-n> :NERDTreeToggle<CR>
 
 augroup fileTypeIndent
@@ -64,3 +58,5 @@ augroup fileTypeIndent
     autocmd BufNewFile,BufRead *.css setlocal tabstop=2 softtabstop=2 shiftwidth=2
     autocmd BufNewFile,BufRead *.go setlocal noexpandtab
 augroup END
+
+colorscheme railscasts
