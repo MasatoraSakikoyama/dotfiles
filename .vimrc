@@ -1,6 +1,5 @@
 syntax enable
 set list
-set listchars=tab:>-,trail:-
 set number
 set title
 set virtualedit=onemore
@@ -29,6 +28,7 @@ set showcmd
 set backspace=indent,eol,start
 set clipboard=unnamed
 nmap <Esc><Esc> :nohlsearch<CR><Esc>
+
 " python pdb"
 inoremap pdb<Space> import pdb;pdb.set_trace()
 
@@ -46,7 +46,7 @@ call neobundle#end()
 
 filetype plugin indent on
 
-let NERDTreeShowHidden = 1 " 隠しファイル表示
+let NERDTreeShowHidden = 1
 nnoremap <silent><C-n> :NERDTreeToggle<CR>
 
 augroup fileTypeIndent

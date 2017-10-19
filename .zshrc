@@ -14,7 +14,7 @@ setopt no_beep
 setopt ignore_eof
 # '#'以降をコメントとして扱う
 setopt interactive_comments
-#同時に起動したzshの間でヒストリを共有する
+# 同時に起動したzshの間でヒストリを共有する
 setopt share_history
 # 同じコマンドをヒストリに残さない
 setopt hist_ignore_all_dups
@@ -75,7 +75,7 @@ HISTSIZE=100000
 SAVEHIST=100000
 # プロンプト
 PROMPT="%{${fg[cyan]}%}%n@%m%{${reset_color}%}:%~$ "
-# OS 別の設定
+# OS別の設定
 case ${OSTYPE} in
     darwin*)
         # Mac用の設定
