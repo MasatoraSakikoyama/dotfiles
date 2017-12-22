@@ -38,6 +38,7 @@ filetype off
 if has('vim_starting')
     set rtp+=$HOME/.vim/bundle/neobundle.vim/
 endif
+set runtimepath^=$HOME/.vim/bundle/neobundle.vim/
 call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'scrooloose/nerdtree'
@@ -45,6 +46,7 @@ NeoBundle 'jpo/vim-railscasts-theme'
 call neobundle#end()
 
 filetype plugin indent on
+NeoBundleCheck
 
 let NERDTreeShowHidden = 1
 nnoremap <silent><C-n> :NERDTreeToggle<CR>

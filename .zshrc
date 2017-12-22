@@ -89,7 +89,6 @@ case ${OSTYPE} in
         alias ll='ls -alFG'
         alias la='ls -AG'
         alias l='ls -CFG'
-        eval "$(ssh-add)"
 
         function random_cowsay() {
             COWS=`brew --prefix`/Cellar/cowsay/3.04/share/cows
@@ -122,3 +121,6 @@ eval "$(pyenv init -)"
 export GOENV_ROOT=$HOME/.goenv
 export PATH=$GOENV_ROOT/bin:$PATH
 eval "$(goenv init -)"
+# openssl
+export CPPFLAGS=-I$(brew --prefix openssl)/include
+export LDFLAGS=-L$(brew --prefix openssl)/lib
