@@ -74,7 +74,10 @@ HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
 # プロンプト
-PROMPT="%{${fg[cyan]}%}%n@%m%{${reset_color}%}:%~$ "
+git_branch_name() {
+    git branch 2>/dev/null | grep '^*' | colrm 1 2
+}
+PROMPT="%{${fg[cyan]}%}%n@%m%{${reset_color}%}:%~ ($(git_branch_name))$ "
 # OS別の設定
 case ${OSTYPE} in
     darwin*)
@@ -89,20 +92,6 @@ case ${OSTYPE} in
         alias ll='ls -alFG'
         alias la='ls -AG'
         alias l='ls -CFG'
-
-        function random_cowsay() {
-            COWS=`brew --prefix`/Cellar/cowsay/3.04/share/cows
-            NBRE_COWS=$(ls -1 $COWS | wc -l)
-            COWS_RANDOM=$(( $RANDOM % $NBRE_COWS + 1))
-            COW_NAME=$(ls -1 $COWS | awk -F\. -v COWS_RANDOM_AWK=$COWS_RANDOM 'NR == COWS_RANDOM_AWK {print $1}')
-            cowsay -f $COW_NAME `fortune -s`
-        }
-        if which fortune cowsay >/dev/null; then
-            while ;
-            do
-                random_cowsay 2>/dev/null && break
-            done
-        fi && unset -f random_cowsay
         ;;
     linux*)
         # Linux用の設定
