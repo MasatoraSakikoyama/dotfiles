@@ -2,7 +2,7 @@
 # install
 brew update
 brew upgrade
-brew install zsh nvim tmux git reattach-to-user-namespace
+brew install zsh zsh-git-prompt nvim tmux git reattach-to-user-namespace
 
 # change login shell
 sed -i -e 's#\$#/usr/local/bin/zsh#' /etc/shells

@@ -74,10 +74,17 @@ HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
 # プロンプト
-git_branch_name() {
-    git branch 2>/dev/null | grep '^*' | colrm 1 2
-}
-PROMPT="%{${fg[cyan]}%}%n@%m%{${reset_color}%}:%~ ($(git_branch_name))$ "
+source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
+ZSH_THEME_GIT_PROMPT_PREFIX="["
+ZSH_THEME_GIT_PROMPT_SUFFIX=" ]"
+ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg[white]%}"
+ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[green]%}%{ %G%}"
+ZSH_THEME_GIT_PROMPT_CONFLICTS="%{$fg[magenta]%}%{x%G%}"
+ZSH_THEME_GIT_PROMPT_CHANGED="%{$fg[red]%}%{+%G%}"
+ZSH_THEME_GIT_PROMPT_BEHIND="%{$fg[red]%}%{-%G%}"
+ZSH_THEME_GIT_PROMPT_AHEAD="%{$fg[green]%}%{+%G%}"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[green]%}%{✔%G%}"
+PROMPT='%{${fg[cyan]}%}%n@%m%{${reset_color}%}:%~ $(git_super_status)$ '
 # OS別の設定
 case ${OSTYPE} in
     darwin*)
