@@ -74,17 +74,17 @@ HISTFILE=~/.zsh_history
 HISTSIZE=100000
 SAVEHIST=100000
 # プロンプト
-source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
-ZSH_THEME_GIT_PROMPT_PREFIX="["
-ZSH_THEME_GIT_PROMPT_SUFFIX=" ]"
-ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg[white]%}"
-ZSH_THEME_GIT_PROMPT_STAGED="%{$fg[green]%}%{ %G%}"
-ZSH_THEME_GIT_PROMPT_CONFLICTS="%{$fg[magenta]%}%{x%G%}"
-ZSH_THEME_GIT_PROMPT_CHANGED="%{$fg[red]%}%{+%G%}"
-ZSH_THEME_GIT_PROMPT_BEHIND="%{$fg[red]%}%{-%G%}"
-ZSH_THEME_GIT_PROMPT_AHEAD="%{$fg[green]%}%{+%G%}"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[green]%}%{✔%G%}"
-PROMPT='%{${fg[cyan]}%}%n@%m%{${reset_color}%}:%~ $(git_super_status)$ '
+autoload -Uz add-zsh-hook
+autoload -Uz vcs_info
+setopt PROMPT_SUBST
+zstyle ':vcs_info:git:*' check-for-changes true
+zstyle ':vcs_info:git:*' stagedstr "%F{yellow}!"
+zstyle ':vcs_info:git:*' unstagedstr "%F{red}+"
+zstyle ':vcs_info:*' formats "%F{green}%c%u[%b]%f"
+zstyle ':vcs_info:*' actionformats '[%b|%a]'
+_vcs_precmd () { vcs_info }
+add-zsh-hook precmd _vcs_precmd
+PROMPT='%~ ${vcs_info_msg_0_}$ '
 # OS別の設定
 case ${OSTYPE} in
     darwin*)
