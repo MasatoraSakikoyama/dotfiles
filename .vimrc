@@ -32,6 +32,8 @@ nmap <Esc><Esc> :nohlsearch<CR><Esc>
 " python pdb"
 inoremap pdb<Space> import pdb;pdb.set_trace()
 
+autocmd FileType vue syntax sync fromstart
+
 set nocompatible
 filetype off
 
