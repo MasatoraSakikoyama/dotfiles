@@ -1,3 +1,4 @@
+export EDITOR=vim
 export LANG=en_US.UTF-8
 bindkey -v
 # cd後、自動的にpushdする
@@ -45,8 +46,8 @@ alias mv='mv -i'
 alias grep='grep --color=auto'
 alias mkdir='mkdir -p'
 alias sudo='sudo '
-alias vim='nvim'
-alias vi='nvim'
+alias vim='vim'
+alias vi='vim'
 # 補完機能を有効にする(homebrewでのzsh,gitのインストール前提)
 fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
 autoload -Uz compinit

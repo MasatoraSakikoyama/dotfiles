@@ -1,3 +1,14 @@
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jpo/vim-railscasts-theme'
+Plugin 'posva/vim-vue'
+call vundle#end()
+filetype plugin indent on
+
 syntax enable
 set list
 set number
@@ -33,23 +44,6 @@ nmap <Esc><Esc> :nohlsearch<CR><Esc>
 inoremap pdb<Space> import pdb;pdb.set_trace()
 
 autocmd FileType vue syntax sync fromstart
-
-set nocompatible
-filetype off
-
-if has('vim_starting')
-    set rtp+=$HOME/.vim/bundle/neobundle.vim/
-endif
-set runtimepath^=$HOME/.vim/bundle/neobundle.vim/
-call neobundle#begin(expand('~/.vim/bundle/'))
-NeoBundleFetch 'Shougo/neobundle.vim'
-NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'jpo/vim-railscasts-theme'
-NeoBundle 'posva/vim-vue'
-call neobundle#end()
-
-filetype plugin indent on
-NeoBundleCheck
 
 let NERDTreeShowHidden = 1
 nnoremap <silent><C-n> :NERDTreeToggle<CR>
