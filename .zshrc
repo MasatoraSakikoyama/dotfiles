@@ -121,3 +121,5 @@ eval "$(goenv init -)"
 # openssl
 export CPPFLAGS=-I$(brew --prefix openssl)/include
 export LDFLAGS=-L$(brew --prefix openssl)/lib
+# direnv
+eval "$(direnv hook zsh)"
