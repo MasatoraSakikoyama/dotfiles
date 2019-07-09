@@ -8,6 +8,7 @@ Plugin 'jpo/vim-railscasts-theme'
 Plugin 'posva/vim-vue'
 Plugin 'mattn/webapi-vim'
 Plugin 'mattn/excelview-vim'
+Plugin 'kylef/apiblueprint.vim'
 call vundle#end()
 filetype plugin indent on
 
