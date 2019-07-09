@@ -6,6 +6,8 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jpo/vim-railscasts-theme'
 Plugin 'posva/vim-vue'
+Plugin 'mattn/webapi-vim'
+Plugin 'mattn/excelview-vim'
 call vundle#end()
 filetype plugin indent on
 
