@@ -6,6 +6,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jpo/vim-railscasts-theme'
 Plugin 'posva/vim-vue'
+Plugin 'kylef/apiblueprint.vim'
 call vundle#end()
 filetype plugin indent on
 
