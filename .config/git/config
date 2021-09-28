@@ -1,5 +1,7 @@
 [user]
-    name = 
-    email = 
+    name =
+    email =
 [core]
     editor = vim
+[pull]
+    ff = only
