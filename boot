@@ -13,4 +13,4 @@ ln -s .config ~/.config
 ln -s .gitconfig ~/.gitconfig
 ln -s .tmux.conf ~/.tmux.conf
 ln -s .zsh ~/.zsh
-ln -s .zshrc ~/.zshirc
+ln -s .zshrc ~/.zshrc

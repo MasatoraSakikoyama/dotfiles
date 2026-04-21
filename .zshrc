@@ -3,9 +3,7 @@ export LANG=en_US.UTF-8
 bindkey -v
 # cd後、自動的にpushdする
 setopt auto_pushd
-# 重複したディレクトリを追加しない
-setopt pushd_ignore_dups
-# pushd したとき、ディレクトリがすでにスタックに含まれていればスタックに追加しない
+# pushdしたとき、ディレクトリがすでにスタックに含まれていればスタックに追加しない
 setopt pushd_ignore_dups
 # 日本語ファイル名を表示可能にする
 setopt print_eight_bit
@@ -48,8 +46,10 @@ alias mkdir='mkdir -p'
 alias sudo='sudo '
 alias vim='vim'
 alias vi='vim'
-# 補完機能を有効にする(homebrewでのzsh,gitのインストール前提)
-fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
+# 補完機能を有効にする
+if type brew &>/dev/null; then
+    fpath=($(brew --prefix)/share/zsh/site-functions $fpath)
+fi
 autoload -Uz compinit
 compinit -u
 # 色を使用出来るようにする
@@ -90,7 +90,7 @@ PROMPT='%~ ${vcs_info_msg_0_}$ '
 case ${OSTYPE} in
     darwin*)
         # Mac用の設定
-        export PATH="/usr/local/Cellar/git/2.5.0/bin:$PATH"
+        export PATH=$(brew --prefix git)/bin:$PATH
         export PATH=/usr/local:$PATH
         LSCOLORS=gxfxcxdxbxegedabagacad
         if [ -n "$LSCOLORS" ]; then
@@ -100,6 +100,9 @@ case ${OSTYPE} in
         alias ll='ls -alFG'
         alias la='ls -AG'
         alias l='ls -CFG'
+        # openssl
+        export CPPFLAGS=-I$(brew --prefix openssl)/include
+        export LDFLAGS=-L$(brew --prefix openssl)/lib
         ;;
     linux*)
         # Linux用の設定
@@ -111,15 +114,18 @@ case ${OSTYPE} in
         ;;
 esac
 # pyenv
-export PYENV_ROOT=$HOME/.pyenv
-export PATH=$PYENV_ROOT/bin:$PATH
-eval "$(pyenv init -)"
+if [ -d "$HOME/.pyenv" ]; then
+    export PYENV_ROOT=$HOME/.pyenv
+    export PATH=$PYENV_ROOT/bin:$PATH
+    eval "$(pyenv init -)"
+fi
 # goenv
-export GOENV_ROOT=$HOME/.goenv
-export PATH=$GOENV_ROOT/bin:$PATH
-eval "$(goenv init -)"
-# openssl
-export CPPFLAGS=-I$(brew --prefix openssl)/include
-export LDFLAGS=-L$(brew --prefix openssl)/lib
+if [ -d "$HOME/.goenv" ]; then
+    export GOENV_ROOT=$HOME/.goenv
+    export PATH=$GOENV_ROOT/bin:$PATH
+    eval "$(goenv init -)"
+fi
 # direnv
-eval "$(direnv hook zsh)"
+if type direnv &>/dev/null; then
+    eval "$(direnv hook zsh)"
+fi
