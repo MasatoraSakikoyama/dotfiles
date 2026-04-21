@@ -2,6 +2,6 @@
     name =
     email =
 [core]
-    editor = vim
+    editor = nvim
 [pull]
     ff = only

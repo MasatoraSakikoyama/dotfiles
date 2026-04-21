@@ -1,0 +1,240 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+brew_bin="/opt/homebrew/bin/brew"
+dry_run=0
+
+usage() {
+  cat <<'EOF'
+Usage: ./bootstrap [--dry-run]
+
+  --dry-run  Print the actions without changing the system
+  --help     Show this help
+EOF
+}
+
+run_cmd() {
+  if (( dry_run )); then
+    printf '[dry-run] %q' "$1"
+    shift
+    for arg in "$@"; do
+      printf ' %q' "$arg"
+    done
+    printf '\n'
+    return
+  fi
+
+  "$@"
+}
+
+ensure_homebrew() {
+  if command -v brew >/dev/null 2>&1; then
+    return
+  fi
+
+  echo "Installing Homebrew"
+  if (( dry_run )); then
+    echo '[dry-run] NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
+    return
+  fi
+
+  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+}
+
+setup_brew_shellenv() {
+  if command -v brew >/dev/null 2>&1; then
+    eval "$(brew shellenv)"
+    return
+  fi
+
+  if [[ -x "$brew_bin" ]]; then
+    eval "$("$brew_bin" shellenv)"
+    return
+  fi
+
+  if (( dry_run )); then
+    echo '[dry-run] eval "$(/opt/homebrew/bin/brew shellenv)"'
+    return
+  fi
+
+  echo "Homebrew installation failed or is not available in /opt/homebrew." >&2
+  exit 1
+}
+
+ensure_package() {
+  local package_name="$1"
+
+  if [[ -x "$brew_bin" ]] && "$brew_bin" list "$package_name" >/dev/null 2>&1; then
+    run_cmd "$brew_bin" upgrade "$package_name"
+    return
+  fi
+
+  run_cmd "$brew_bin" install "$package_name"
+}
+
+ensure_path_absent_or_managed_link() {
+  local source_path="$1"
+  local target_path="$2"
+
+  if [[ -L "$target_path" ]] && [[ "$(readlink "$target_path")" == "$source_path" ]]; then
+    return
+  fi
+
+  if [[ -e "$target_path" || -L "$target_path" ]]; then
+    echo "Refusing to replace existing path: $target_path" >&2
+    exit 1
+  fi
+}
+
+ensure_directory_available() {
+  local target_path="$1"
+
+  if [[ -d "$target_path" ]] && [[ ! -L "$target_path" ]]; then
+    return
+  fi
+
+  if [[ -e "$target_path" || -L "$target_path" ]]; then
+    echo "Refusing to replace existing path: $target_path" >&2
+    exit 1
+  fi
+}
+
+link_path() {
+  local source_path="$1"
+  local target_path="$2"
+
+  mkdir -p "$(dirname "$target_path")"
+
+  ensure_path_absent_or_managed_link "$source_path" "$target_path"
+
+  run_cmd ln -s "$source_path" "$target_path"
+}
+
+install_git_config_template() {
+  local source_path="$repo_root/.config/git/config"
+  local target_dir="$HOME/.config/git"
+  local target_path="$target_dir/config"
+
+  ensure_directory_available "$target_dir"
+  mkdir -p "$target_dir"
+
+  if [[ -f "$target_path" ]] && cmp -s "$source_path" "$target_path"; then
+    return
+  fi
+
+  if [[ -e "$target_path" || -L "$target_path" ]]; then
+    echo "Refusing to replace existing path: $target_path" >&2
+    exit 1
+  fi
+
+  run_cmd cp "$source_path" "$target_path"
+}
+
+ensure_lazy_nvim() {
+  local lazy_dir="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/lazy/lazy.nvim"
+
+  if [[ -d "$lazy_dir" ]]; then
+    return
+  fi
+
+  run_cmd git clone --filter=blob:none --branch=stable https://github.com/folke/lazy.nvim.git "$lazy_dir"
+}
+
+sync_neovim_plugins() {
+  run_cmd /opt/homebrew/bin/nvim --headless "+Lazy! sync" +qa
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --dry-run)
+      dry_run=1
+      ;;
+    --help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Unknown option: $1" >&2
+      usage >&2
+      exit 1
+      ;;
+  esac
+  shift
+done
+
+brew_cmd() {
+  if command -v brew >/dev/null 2>&1; then
+    brew "$@"
+    return
+  fi
+
+  if [[ -x "$brew_bin" ]]; then
+    "$brew_bin" "$@"
+    return
+  fi
+
+  if (( dry_run )) && [[ "$1" == "--prefix" ]] && [[ "${2:-}" == "zsh" ]]; then
+    printf '/opt/homebrew/opt/zsh\n'
+    return
+  fi
+
+  echo "Homebrew installation failed or is not available in /opt/homebrew." >&2
+  exit 1
+}
+
+if [[ "$(uname -s)" != "Darwin" ]]; then
+  echo "This bootstrap script is intended for macOS." >&2
+  exit 1
+fi
+
+if [[ "$(uname -m)" != "arm64" ]]; then
+  echo "This bootstrap script is intended for Apple Silicon Macs." >&2
+  exit 1
+fi
+
+ensure_path_absent_or_managed_link "$repo_root/.zshrc" "$HOME/.zshrc"
+ensure_directory_available "$HOME/.config/git"
+ensure_path_absent_or_managed_link "$repo_root/.config/nvim" "$HOME/.config/nvim"
+ensure_path_absent_or_managed_link "$repo_root/.config/tmux" "$HOME/.config/tmux"
+ensure_path_absent_or_managed_link "$repo_root/.config/zsh" "$HOME/.config/zsh"
+
+if [[ -e "$HOME/.config/git/config" || -L "$HOME/.config/git/config" ]]; then
+  if ! [[ -f "$HOME/.config/git/config" ]] || ! cmp -s "$repo_root/.config/git/config" "$HOME/.config/git/config"; then
+    echo "Refusing to replace existing path: $HOME/.config/git/config" >&2
+    exit 1
+  fi
+fi
+
+ensure_homebrew
+setup_brew_shellenv
+
+run_cmd "$brew_bin" update
+
+for package_name in git neovim tmux zsh; do
+  ensure_package "$package_name"
+done
+
+zsh_bin="$(brew_cmd --prefix zsh)/bin/zsh"
+if ! grep -qx "$zsh_bin" /etc/shells; then
+  echo "Adding $zsh_bin to /etc/shells"
+  if (( dry_run )); then
+    printf '[dry-run] printf %%s\\n %q | sudo tee -a /etc/shells >/dev/null\n' "$zsh_bin"
+  else
+    printf '%s\n' "$zsh_bin" | sudo tee -a /etc/shells >/dev/null
+  fi
+fi
+
+if [[ "${SHELL:-}" != "$zsh_bin" ]]; then
+  run_cmd chsh -s "$zsh_bin"
+fi
+
+link_path "$repo_root/.zshrc" "$HOME/.zshrc"
+install_git_config_template
+link_path "$repo_root/.config/nvim" "$HOME/.config/nvim"
+link_path "$repo_root/.config/tmux" "$HOME/.config/tmux"
+link_path "$repo_root/.config/zsh" "$HOME/.config/zsh"
+
+ensure_lazy_nvim
+sync_neovim_plugins

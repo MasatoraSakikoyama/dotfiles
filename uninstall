@@ -1,0 +1,161 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+brew_bin="/opt/homebrew/bin/brew"
+remove_homebrew=0
+dry_run=0
+
+usage() {
+  cat <<'EOF'
+Usage: ./uninstall [--remove-homebrew] [--dry-run]
+
+  --remove-homebrew  Remove Homebrew itself after uninstalling managed packages
+  --dry-run          Print the actions without changing the system
+  --help             Show this help
+EOF
+}
+
+run_cmd() {
+  if (( dry_run )); then
+    printf '[dry-run] %q' "$1"
+    shift
+    for arg in "$@"; do
+      printf ' %q' "$arg"
+    done
+    printf '\n'
+    return
+  fi
+
+  "$@"
+}
+
+unlink_managed_path() {
+  local source_path="$1"
+  local target_path="$2"
+
+  if [[ -L "$target_path" ]] && [[ "$(readlink "$target_path")" == "$source_path" ]]; then
+    run_cmd rm -f "$target_path"
+    return
+  fi
+
+  echo "Skipping $target_path because it is not managed by this repository"
+}
+
+remove_if_exists() {
+  local target_path="$1"
+
+  if [[ -e "$target_path" || -L "$target_path" ]]; then
+    run_cmd rm -rf "$target_path"
+  fi
+}
+
+current_login_shell() {
+  dscl . -read "/Users/$USER" UserShell | awk '{print $2}'
+}
+
+setup_brew_shellenv() {
+  if [[ -x "$brew_bin" ]]; then
+    eval "$("$brew_bin" shellenv)"
+  fi
+}
+
+uninstall_package() {
+  local package_name="$1"
+
+  if ! [[ -x "$brew_bin" ]]; then
+    echo "Skipping package removal for $package_name because Homebrew is not installed"
+    return
+  fi
+
+  if "$brew_bin" list "$package_name" >/dev/null 2>&1; then
+    run_cmd "$brew_bin" uninstall "$package_name"
+    return
+  fi
+
+  echo "Skipping $package_name because it is not installed with Homebrew"
+}
+
+switch_shell_back_if_needed() {
+  local brew_zsh_bin="/opt/homebrew/bin/zsh"
+  local login_shell
+
+  if ! [[ -x "$brew_zsh_bin" ]]; then
+    return
+  fi
+
+  login_shell="$(current_login_shell)"
+  if [[ "$login_shell" == "$brew_zsh_bin" ]]; then
+    run_cmd chsh -s /bin/zsh
+  fi
+}
+
+remove_neovim_data() {
+  remove_if_exists "${XDG_DATA_HOME:-$HOME/.local/share}/nvim"
+  remove_if_exists "${XDG_STATE_HOME:-$HOME/.local/state}/nvim"
+  remove_if_exists "${XDG_CACHE_HOME:-$HOME/.cache}/nvim"
+}
+
+remove_homebrew_installation() {
+  if ! [[ -x "$brew_bin" ]]; then
+    echo "Skipping Homebrew removal because /opt/homebrew/bin/brew does not exist"
+    return
+  fi
+
+  if (( dry_run )); then
+    echo '[dry-run] NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"'
+    return
+  fi
+
+  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --remove-homebrew)
+      remove_homebrew=1
+      ;;
+    --dry-run)
+      dry_run=1
+      ;;
+    --help)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Unknown option: $1" >&2
+      usage >&2
+      exit 1
+      ;;
+  esac
+  shift
+done
+
+if [[ "$(uname -s)" != "Darwin" ]]; then
+  echo "This uninstall script is intended for macOS." >&2
+  exit 1
+fi
+
+if [[ "$(uname -m)" != "arm64" ]]; then
+  echo "This uninstall script is intended for Apple Silicon Macs." >&2
+  exit 1
+fi
+
+setup_brew_shellenv
+switch_shell_back_if_needed
+
+unlink_managed_path "$repo_root/.zshrc" "$HOME/.zshrc"
+unlink_managed_path "$repo_root/.config/nvim" "$HOME/.config/nvim"
+unlink_managed_path "$repo_root/.config/tmux" "$HOME/.config/tmux"
+unlink_managed_path "$repo_root/.config/zsh" "$HOME/.config/zsh"
+
+remove_neovim_data
+
+for package_name in git neovim tmux zsh; do
+  uninstall_package "$package_name"
+done
+
+if (( remove_homebrew )); then
+  remove_homebrew_installation
+fi
