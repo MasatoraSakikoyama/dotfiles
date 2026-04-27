@@ -42,6 +42,8 @@ Temporary Items
 
 # for docker divelop
 .bash_history
+.config/zsh/.zcompdump
+.config/zsh/.zsh_sessions/
 .cache/
 .npm/
 .viminfo
