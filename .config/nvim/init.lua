@@ -1,3 +1,6 @@
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -23,7 +26,6 @@ opt.virtualedit = "onemore"
 opt.smartindent = true
 opt.visualbell = true
 opt.showmatch = true
-opt.laststatus = 3
 opt.wildmode = "list:longest"
 opt.expandtab = true
 opt.tabstop = 4
@@ -87,24 +89,43 @@ require("lazy").setup({
     end,
   },
   {
-    "nvim-tree/nvim-web-devicons",
-    lazy = true,
-  },
-  {
     "nvim-tree/nvim-tree.lua",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
       require("nvim-tree").setup({
+        disable_netrw = true,
+        view = {
+          signcolumn = "no",
+        },
         filters = {
+          git_ignored = false,
           dotfiles = false,
         },
         renderer = {
+          highlight_git = "name",
+          highlight_clipboard = "name",
           icons = {
+            web_devicons = {
+              file = {
+                enable = false,
+              },
+              folder = {
+                enable = false,
+              },
+            },
+            padding = {
+              icon = "",
+              folder_arrow = "",
+            },
+            symlink_arrow = "",
             show = {
               file = false,
               folder = false,
               folder_arrow = false,
               git = false,
+              modified = false,
+              hidden = false,
+              diagnostics = false,
+              bookmarks = false,
             },
           },
         },
@@ -114,20 +135,6 @@ require("lazy").setup({
       })
 
       vim.keymap.set("n", "<C-n>", "<cmd>NvimTreeToggle<CR>", { silent = true })
-    end,
-  },
-  {
-    "nvim-lualine/lualine.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function()
-      require("lualine").setup({
-        options = {
-          icons_enabled = false,
-          theme = "auto",
-          section_separators = { left = "", right = "" },
-          component_separators = { left = "|", right = "|" },
-        },
-      })
     end,
   },
   {
