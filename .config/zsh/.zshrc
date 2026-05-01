@@ -91,3 +91,5 @@ _vcs_precmd() {
 
 add-zsh-hook precmd _vcs_precmd
 PROMPT='%~ ${vcs_info_msg_0_}$ '
+
+[[ -f "${HOME}/.zshrc.local" ]] && source "${HOME}/.zshrc.local"
