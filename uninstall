@@ -152,7 +152,7 @@ unlink_managed_path "$repo_root/.config/zsh" "$HOME/.config/zsh"
 
 remove_neovim_data
 
-for package_name in git neovim tmux zsh; do
+for package_name in git neovim tmux zsh tree-sitter-cli; do
   uninstall_package "$package_name"
 done
 

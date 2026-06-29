@@ -139,11 +139,96 @@ require("lazy").setup({
   },
   {
     "nvim-treesitter/nvim-treesitter",
+    lazy = false,
     build = ":TSUpdate",
+    config = function()
+      local ts_install = require("nvim-treesitter").install({
+        "yaml", "markdown", "markdown_inline",
+        "python", "javascript", "typescript", "tsx",
+        "html", "css", "scss", "vue", "json", "go", "lua",
+      })
+      if #vim.api.nvim_list_uis() == 0 then
+        ts_install:wait(600000)
+      end
+
+      vim.treesitter.language.register("javascript", "javascriptreact")
+      vim.treesitter.language.register("tsx", "typescriptreact")
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = {
+          "yaml", "markdown",
+          "python", "javascript", "javascriptreact",
+          "typescript", "typescriptreact",
+          "html", "css", "scss", "vue", "json", "go", "lua",
+        },
+        callback = function()
+          pcall(vim.treesitter.start)
+        end,
+      })
+    end,
   },
   {
-    "github/copilot.vim",
-    event = "InsertEnter",
-    cmd = "Copilot",
+    "hrsh7th/nvim-cmp",
+    config = function()
+      local cmp = require("cmp")
+      cmp.setup({
+        mapping = cmp.mapping.preset.insert({
+          ["<C-n>"] = cmp.mapping.select_next_item(),
+          ["<C-p>"] = cmp.mapping.select_prev_item(),
+          ["<CR>"] = cmp.mapping.confirm({ select = false }),
+        }),
+      })
+    end,
+  },
+  {
+    "olimorris/codecompanion.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "hrsh7th/nvim-cmp",
+    },
+    cmd = {
+      "CodeCompanion",
+      "CodeCompanionChat",
+      "CodeCompanionActions",
+      "CodeCompanionCmd",
+    },
+    config = function()
+      require("codecompanion").setup({
+        adapters = {
+          http = {
+            anthropic = function()
+              return require("codecompanion.adapters").extend("anthropic", {
+                schema = {
+                  model = {
+                    default = "claude-opus-4-8",
+                  },
+                },
+              })
+            end,
+          },
+        },
+        strategies = {
+          inline = { adapter = "anthropic" },
+          chat = { adapter = "anthropic" },
+          cmd = { adapter = "anthropic" },
+        },
+        display = {
+          chat = {
+            show_settings = true,
+            icons = {
+              buffer_sync_all = "",
+              buffer_sync_diff = "",
+              chat_context = "",
+              chat_fold = "",
+              tool_pending = "",
+              tool_in_progress = "",
+              tool_failure = "",
+              tool_success = "",
+            },
+          },
+        },
+      })
+    end,
   },
 })

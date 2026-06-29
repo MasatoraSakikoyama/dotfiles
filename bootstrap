@@ -144,6 +144,8 @@ ensure_lazy_nvim() {
 
 sync_neovim_plugins() {
   run_cmd /opt/homebrew/bin/nvim --headless "+Lazy! sync" +qa
+  # Second pass builds Tree-sitter parsers synchronously; install():wait() blocks in headless mode.
+  run_cmd /opt/homebrew/bin/nvim --headless +qa
 }
 
 while [[ $# -gt 0 ]]; do
@@ -212,7 +214,7 @@ setup_brew_shellenv
 
 run_cmd "$brew_bin" update
 
-for package_name in git neovim tmux zsh; do
+for package_name in git neovim tmux zsh tree-sitter-cli; do
   ensure_package "$package_name"
 done
 
