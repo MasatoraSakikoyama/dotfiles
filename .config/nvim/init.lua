@@ -2,7 +2,7 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
   vim.fn.system({
     "git",
     "clone",
@@ -53,17 +53,7 @@ vim.keymap.set("n", "<Esc><Esc>", "<cmd>nohlsearch<CR><Esc>", { silent = true })
 local indent_group = vim.api.nvim_create_augroup("fileTypeIndent", { clear = true })
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
   group = indent_group,
-  pattern = "*.py",
-  callback = function()
-    vim.opt_local.tabstop = 4
-    vim.opt_local.softtabstop = 4
-    vim.opt_local.shiftwidth = 4
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
-  group = indent_group,
-  pattern = { "*.js", "*.jsx", "*.ts", "*.html", "*.css", "*.scss", "*.vue", "*.json" },
+  pattern = { "*.js", "*.jsx", "*.ts", "*.tsx", "*.html", "*.css", "*.scss", "*.vue", "*.json" },
   callback = function()
     vim.opt_local.tabstop = 2
     vim.opt_local.softtabstop = 2
@@ -138,33 +128,12 @@ require("lazy").setup({
     end,
   },
   {
-    "nvim-treesitter/nvim-treesitter",
+    "romus204/tree-sitter-manager.nvim",
     lazy = false,
-    build = ":TSUpdate",
     config = function()
-      local ts_install = require("nvim-treesitter").install({
-        "yaml", "markdown", "markdown_inline",
-        "python", "javascript", "typescript", "tsx",
-        "html", "css", "scss", "vue", "json", "go", "lua",
-      })
-      if #vim.api.nvim_list_uis() == 0 then
-        ts_install:wait(600000)
-      end
-
+      require("tree-sitter-manager").setup()
       vim.treesitter.language.register("javascript", "javascriptreact")
       vim.treesitter.language.register("tsx", "typescriptreact")
-
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = {
-          "yaml", "markdown",
-          "python", "javascript", "javascriptreact",
-          "typescript", "typescriptreact",
-          "html", "css", "scss", "vue", "json", "go", "lua",
-        },
-        callback = function()
-          pcall(vim.treesitter.start)
-        end,
-      })
     end,
   },
   {
@@ -184,14 +153,12 @@ require("lazy").setup({
     "olimorris/codecompanion.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
       "hrsh7th/nvim-cmp",
     },
-    cmd = {
-      "CodeCompanion",
-      "CodeCompanionChat",
-      "CodeCompanionActions",
-      "CodeCompanionCmd",
+    keys = {
+      { "<C-c>c", "<cmd>CodeCompanionChat Toggle<CR>", desc = "Chat toggle" },
+      { "<C-c>a", "<cmd>CodeCompanionActions<CR>", desc = "Actions" },
+      { "<C-c>i", "<cmd>CodeCompanion<CR>", desc = "Inline", mode = "v" },
     },
     config = function()
       require("codecompanion").setup({
@@ -208,17 +175,24 @@ require("lazy").setup({
             end,
           },
         },
-        strategies = {
+        interactions = {
           inline = { adapter = "anthropic" },
-          chat = { adapter = "anthropic" },
+          chat = {
+            adapter = "anthropic",
+            tools = {
+              opts = {
+                default_tools = { "agent" },
+              },
+            },
+          },
           cmd = { adapter = "anthropic" },
         },
         display = {
           chat = {
             show_settings = true,
             icons = {
-              buffer_sync_all = "",
-              buffer_sync_diff = "",
+              sync_all = "",
+              sync_diff = "",
               chat_context = "",
               chat_fold = "",
               tool_pending = "",
