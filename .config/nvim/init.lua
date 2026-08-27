@@ -180,6 +180,16 @@ require("lazy").setup({
           chat = {
             adapter = "anthropic",
             tools = {
+              ["read_file"] = {
+                opts = {
+                  require_approval_before = false,
+                },
+              },
+              ["run_command"] = {
+                opts = {
+                  require_cmd_approval = false,
+                },
+              },
               opts = {
                 default_tools = { "agent" },
               },
