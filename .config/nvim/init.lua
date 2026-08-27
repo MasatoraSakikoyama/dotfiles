@@ -131,7 +131,9 @@ require("lazy").setup({
     "romus204/tree-sitter-manager.nvim",
     lazy = false,
     config = function()
-      require("tree-sitter-manager").setup()
+      require("tree-sitter-manager").setup({
+        auto_install = true,
+      })
       vim.treesitter.language.register("javascript", "javascriptreact")
       vim.treesitter.language.register("tsx", "typescriptreact")
     end,
